@@ -1,0 +1,23 @@
+{% extends 'product/base.html' %}
+{% block title %}منو محصولات{% endblock %}
+{% block content %}
+<h1>منو محصولات</h1>
+
+    
+    <ul>
+        {% for product in products %}
+            <li>
+                <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                - {{ product.price }} تومان
+            </li>
+        {% endfor %}
+    </ul>
+<!-- Display list of products -->
+{% endblock %}
+
+
+
+
+
+
+

@@ -1,0 +1,59 @@
+ {% extends 'product/base.html' %}
+{% block content %}
+<h1>Your Cart</h1>
+<!-- Display cart items here -->
+{% endblock %} 
+
+
+{% comment %} {% extends 'product/base.html' %}
+{% block content %}
+<h1>Your Cart</h1>
+<!-- Display cart items here -->
+
+
+
+
+<!-- cart/templates/cart/cart_summary.html -->
+
+    <h1>Cart Summary</h1>
+    {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>
+                        <form action="{% url 'cart_update' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                    <td>${{ item.price }}</td>
+                    <td>
+                        <form action="{% url 'cart_delete' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2>Total Price: ${{ total_price }}</h2>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+    <a href="{% url 'menu' %}">Continue Shopping</a>
+
+{% endblock %} {% endcomment %}
