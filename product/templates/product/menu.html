@@ -1,20 +1,22 @@
 {% extends 'product/base.html' %}
 {% block title %}منو محصولات{% endblock %}
 {% block content %}
+
 <h1>منو محصولات</h1>
-
-    
-    <ul>
-        {% for product in products %}
-            <li>
-                <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
-                - {{ product.price }} تومان
-            </li>
-        {% endfor %}
-    </ul>
-<!-- Display list of products -->
+<ul>
+    {% for product in products %}
+        <li>
+            <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+            - {{ product.price }} تومان
+            <form action="{% url 'cart_add' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="item_id" value="{{ product.id }}">
+                <button type="submit">اضافه به سبد خرید</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
 {% endblock %}
-
 
 
 

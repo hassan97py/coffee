@@ -1,59 +1,28 @@
- {% extends 'product/base.html' %}
+{% extends 'product/base.html' %}
+{% block title %}سبد خرید{% endblock %}
 {% block content %}
-<h1>Your Cart</h1>
-<!-- Display cart items here -->
-{% endblock %} 
 
+<h1>سبد خرید</h1>
+<ul>
+    {% for item in cart_items %}
+        <li>
+            {{ item.name }} - {{ item.price }} تومان - تعداد: {{ item.quantity }}
+            <form action="{% url 'cart_delete' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="item_id" value="{{ item.id }}">
+                <button type="submit">حذف</button>
+            </form>
+            <form action="{% url 'cart_update' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="item_id" value="{{ item.id }}">
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                <button type="submit">به‌روزرسانی</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
 
-{% comment %} {% extends 'product/base.html' %}
-{% block content %}
-<h1>Your Cart</h1>
-<!-- Display cart items here -->
+<h2>مجموع قیمت: {{ total_price }} تومان</h2>
 
-
-
-
-<!-- cart/templates/cart/cart_summary.html -->
-
-    <h1>Cart Summary</h1>
-    {% if cart_items %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
-                <tr>
-                    <td>{{ item.name }}</td>
-                    <td>
-                        <form action="{% url 'cart_update' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="item_id" value="{{ item.id }}">
-                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
-                            <button type="submit">Update</button>
-                        </form>
-                    </td>
-                    <td>${{ item.price }}</td>
-                    <td>
-                        <form action="{% url 'cart_delete' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="item_id" value="{{ item.id }}">
-                            <button type="submit">Remove</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <h2>Total Price: ${{ total_price }}</h2>
-    {% else %}
-        <p>Your cart is empty.</p>
-    {% endif %}
-    <a href="{% url 'menu' %}">Continue Shopping</a>
-
-{% endblock %} {% endcomment %}
+<a href="{% url 'menu' %}">ادامه خرید</a>
+{% endblock %}
